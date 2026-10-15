@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Photo from '../components/Photo.astro';
+import CallCard from '../components/CallCard.astro';
+import ContactButtons from '../components/ContactButtons.astro';
+import { site } from '../data/site';
+import { breadcrumbSchema } from '../lib/schema';
+const crumbs = [{ name: 'Контакты', href: '/kontakty/' }];
+const links = [
+  { label: 'Яндекс Карты', href: site.yandexMapsUrl },
+  { label: '2ГИС', href: site.twoGisUrl },
+  { label: 'Авито', href: site.avitoUrl },
+].filter((l) => l.href);
+---
+<Base
+  title="Контакты мастера по ремонту часов в Ставрополе — телефон, график"
+  description="Контакты мастера по ремонту настенных часов в Ставрополе: телефон +7 928 321-37-80, WhatsApp, Telegram, график работы, как вызвать мастера или передать часы."
+  schema={[breadcrumbSchema([{ name: 'Главная', href: '/' }, ...crumbs])]}
+>
+  <div class="wrap">
+    <Breadcrumbs items={crumbs} />
+    <div class="page-head">
+      <h1>Контакты: ремонт часов в Ставрополе</h1>
+      <p class="lead">Позвоните или напишите в мессенджер — отвечу в удобное для вас время и подскажу, как лучше передать часы в ремонт.</p>
+    </div>
+  </div>
+  <section class="section alt">
+    <div class="wrap cols">
+      <div>
+        <ul class="contact-list">
+          <li><b>Телефон</b><a href={`tel:${site.phone}`} data-goal="click_phone">{site.phoneDisplay}</a></li>
+          <li><b>WhatsApp</b><a href={site.whatsapp} data-goal="click_whatsapp" target="_blank" rel="noopener">Написать в WhatsApp</a></li>
+          <li><b>Город</b>{site.city}, {site.region}</li>
+          {site.address && <li><b>Адрес</b>{site.address}</li>}
+          <li><b>Формат работы</b>{site.area}</li>
+          <li><b>График</b>{site.hours}</li>
+          {links.length > 0 && <li><b>Мы на картах и площадках</b>{links.map((l, i) => <><a href={l.href} target="_blank" rel="noopener">{l.label}</a>{i < links.length - 1 ? ' · ' : ''}</>)}</li>}
+        </ul>
+        <ContactButtons />
+      </div>
+      <div>
+        {site.mapEmbed
+          ? <iframe class="mapbox" src={site.mapEmbed} title="Карта" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          : <Photo src="/img/svc-vintage.webp" alt="Настенные часы с маятником" caption={`${site.city}: выезд по всему городу`} ratio="4/3" />}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap split">
+      <div class="prose">
+        <h2>Как передать часы в ремонт</h2>
+        <p><b>Выезд мастера.</b> Для тяжёлых настенных часов, особенно с боем, лучше вызвать мастера: при снятии со стены и перевозке механизм легко повредить. Я осмотрю часы на месте, назову причину и цену. Если ремонт можно сделать сразу, сделаю его на месте, а сложный механизм заберу в мастерскую.</p>
+        <p><b>Приём на дому.</b> Если часы небольшие и вы можете привезти их сами, договоримся о времени по телефону.</p>
+        <p><b>Предварительная оценка по фото.</b> Пришлите в WhatsApp фото часов целиком, циферблата и, если возможно, механизма сзади, а также коротко опишите, что происходит. Так я смогу заранее сориентировать по причине и цене.</p>
+        <h2>Если нужно везти самому</h2>
+        <p>Перед перевозкой остановите маятник и снимите его, а гири и цепи уберите отдельно. Не наклоняйте часы с боем без фиксации механизма и заворачивайте их в мягкую ткань. Если не уверены, что справитесь, позвоните — подскажу, как лучше поступить.</p>
+      </div>
+      <CallCard />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,11 @@
+---
+const { items } = Astro.props; // [{name, href}] без главной — она добавляется автоматически
+const all = [{ name: 'Главная', href: '/' }, ...items];
+---
+<nav class="crumbs" aria-label="Хлебные крошки">
+  <ol>
+    {all.map((c, i) => (
+      <li>{i < all.length - 1 ? <a href={c.href}>{c.name}</a> : <span aria-current="page">{c.name}</span>}</li>
+    ))}
+  </ol>
+</nav>

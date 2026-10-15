@@ -1,0 +1,109 @@
+---
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import { site, nav } from '../data/site';
+import { services } from '../data/services';
+import { businessSchema } from '../lib/schema';
+
+interface Props { title: string; description: string; schema?: object[]; noindex?: boolean; }
+const { title, description, schema = [], noindex = false } = Astro.props;
+const path = Astro.url.pathname;
+const canonical = site.url + path;
+const og = site.url + '/img/og.png';
+const graph = [businessSchema(), ...schema];
+const year = new Date().getFullYear();
+const ym = site.yandexMetrikaId;
+---
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex, follow" />}
+  <meta name="theme-color" content="#000000" />
+  {site.yandexVerification && <meta name="yandex-verification" content={site.yandexVerification} />}
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:site_name" content={site.shortName} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={og} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preload" href="/fonts/inter-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  {graph.map((g) => <script type="application/ld+json" set:html={JSON.stringify(g)} />)}
+  {ym && (
+    <script is:inline define:vars={{ ym }}>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();
+      for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
+      ym(ym,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:false});
+    </script>
+  )}
+</head>
+<body data-ym={ym}>
+  <a class="skip" href="#main">К содержимому</a>
+  <header class="header">
+    <div class="wrap">
+      <a class="logo" href="/" aria-label={`${site.shortName} — на главную`}>
+        <svg viewBox="0 0 48 48" fill="none" stroke="#ffb71b" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="24" cy="24" r="20"/><path d="M24 11v13l8 5"/><circle cx="24" cy="24" r="1.5" fill="#ffb71b"/></svg>
+        <span>{site.shortName}<small>Ремонт настенных часов</small></span>
+      </a>
+      <nav class="nav" aria-label="Основное меню">
+        {nav.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+      </nav>
+      <a class="header-phone" href={`tel:${site.phone}`} data-goal="click_phone">{site.phoneDisplay}</a>
+      <details class="menu">
+        <summary class="burger" aria-label="Меню"><Icon name="menu" /></summary>
+        <div class="menu-list">
+          {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+          <a href={`tel:${site.phone}`} data-goal="click_phone">{site.phoneDisplay}</a>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="cols3">
+        <div>
+          <h3>{site.name}</h3>
+          <p>Ремонт настенных часов в Ставрополе. {site.area}.<br />{site.hours}.</p>
+          <p><a href={`tel:${site.phone}`} data-goal="click_phone">{site.phoneDisplay}</a></p>
+        </div>
+        <div>
+          <h3>Услуги</h3>
+          <ul>{services.map((s) => <li><a href={`/uslugi/${s.slug}/`}>{s.name}</a></li>)}</ul>
+        </div>
+        <div>
+          <h3>Сайт</h3>
+          <ul>
+            <li><a href="/o-mastere/">О мастере</a></li>
+            <li><a href="/kontakty/">Контакты</a></li>
+            <li><a href="/politika-konfidencialnosti/">Политика конфиденциальности</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="copy">© {year} {site.shortName}, {site.city}. Информация на сайте не является публичной офертой.</p>
+    </div>
+  </footer>
+
+  <div class="mbar" role="group" aria-label="Быстрая связь">
+    <a class="btn btn-primary call" href={`tel:${site.phone}`} data-goal="click_phone"><Icon name="phone" />Позвонить</a>
+    <a class="btn ic wa" href={site.whatsapp} data-goal="click_whatsapp" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><Icon name="whatsapp" /></a>
+  </div>
+
+  <script src="/js/main.js" defer></script>
+</body>
+</html>

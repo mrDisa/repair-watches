@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://remont-chasov-stavropol.ru/sitemap-index.xml

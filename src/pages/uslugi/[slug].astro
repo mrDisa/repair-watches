@@ -1,0 +1,100 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Photo from '../../components/Photo.astro';
+import Faq from '../../components/Faq.astro';
+import CallCard from '../../components/CallCard.astro';
+import ContactButtons from '../../components/ContactButtons.astro';
+import { site } from '../../data/site';
+import { services, getService } from '../../data/services';
+import { serviceSchema, faqSchema, breadcrumbSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug } }));
+}
+const s = getService(Astro.params.slug!);
+const crumbs = [{ name: 'Услуги', href: '/uslugi/' }, { name: s.name, href: `/uslugi/${s.slug}/` }];
+const related = s.related.map(getService);
+---
+<Base
+  title={s.seoTitle}
+  description={s.seoDesc}
+  schema={[serviceSchema(s), faqSchema(s.faq), breadcrumbSchema([{ name: 'Главная', href: '/' }, ...crumbs])]}
+>
+  <div class="wrap">
+    <Breadcrumbs items={crumbs} />
+    <div class="page-head">
+      <h1>{s.h1}</h1>
+      <p class="lead">{s.lead}</p>
+      <div class="facts-box">
+        <div><small>Стоимость</small><b>от {s.priceFrom} ₽</b></div>
+        <div><small>Срок</small><b>{s.term}</b></div>
+        <div><small>Формат</small><b>выезд или приём</b></div>
+      </div>
+      <ContactButtons />
+    </div>
+  </div>
+
+  <section class="section alt">
+    <div class="wrap cols">
+      <div>
+        <h2>Что входит в работу</h2>
+        <ul class="checks">{s.includes.map((i) => <li>{i}</li>)}</ul>
+      </div>
+      <div>
+        <h2>Когда нужна эта услуга</h2>
+        <ul class="checks">{s.when.map((i) => <li>{i}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div class="prose">
+        {s.sections.map((sec) => (
+          <>
+            <h2>{sec.h2}</h2>
+            {sec.p.map((p) => <p>{p}</p>)}
+          </>
+        ))}
+        <p>Цена указана «от» и зависит от конкретной поломки. Окончательную сумму я называю после осмотра и приступаю к работе только с вашего согласия. Нужна консультация — <a href={`tel:${site.phone}`} data-goal="click_phone">позвоните</a> или отправьте фото в <a href={site.whatsapp} data-goal="click_whatsapp" target="_blank" rel="noopener">WhatsApp</a>.</p>
+      </div>
+      <div>
+        <Photo src={s.photo} alt={s.photoCaption} caption={s.photoCaption} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section light">
+    <div class="wrap prose">
+      <h2>Вопросы по услуге</h2>
+      <Faq items={s.faq} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Другие услуги</h2>
+      <div class="cards c3">
+        {related.map((r) => (
+          <article class="card link">
+            <h3><a class="stretch" href={`/uslugi/${r.slug}/`}>{r.name}</a></h3>
+            <p>{r.short}</p>
+            <span class="price">от {r.priceFrom} ₽</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark">
+    <div class="wrap split">
+      <div>
+        <h2>Закажите ремонт</h2>
+        <p style="color:var(--muted)">Свяжитесь удобным способом: {site.hours.toLowerCase()}. Диагностика и оценка стоимости — до начала работы.</p>
+        <ContactButtons ghost />
+      </div>
+      <CallCard />
+    </div>
+  </section>
+</Base>

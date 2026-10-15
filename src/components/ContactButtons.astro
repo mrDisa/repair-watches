@@ -1,0 +1,10 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+const { ghost = false } = Astro.props;
+const secondary = ghost ? 'btn btn-ghost' : 'btn btn-line';
+---
+<div class="btns">
+  <a class="btn btn-primary" href={`tel:${site.phone}`} data-goal="click_phone"><Icon name="phone" />Позвонить</a>
+  <a class={secondary} href={site.whatsapp} data-goal="click_whatsapp" target="_blank" rel="noopener"><Icon name="whatsapp" />WhatsApp</a>
+</div>

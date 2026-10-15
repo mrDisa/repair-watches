@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ContactButtons from '../components/ContactButtons.astro';
+import CallCard from '../components/CallCard.astro';
+import { site, brands } from '../data/site';
+import { breadcrumbSchema } from '../lib/schema';
+const crumbs = [{ name: 'О мастере', href: '/o-mastere/' }];
+---
+<Base
+  title="О мастере: Карен, ремонт настенных часов в Ставрополе, опыт 35 лет"
+  description="Мастер Карен занимается ремонтом настенных часов в Ставрополе уже 35 лет. Подход к работе, честная диагностика и цена до начала ремонта."
+  schema={[breadcrumbSchema([{ name: 'Главная', href: '/' }, ...crumbs])]}
+>
+  <div class="wrap">
+    <Breadcrumbs items={crumbs} />
+    <div class="page-head">
+      <h1>О мастере: {site.masterName}, ремонт настенных часов в Ставрополе</h1>
+      <p class="lead">Я занимаюсь ремонтом часов уже {site.experienceYears} лет и работаю только с настенными часами. Это позволяет знать их устройство очень глубоко.</p>
+    </div>
+  </div>
+  <section class="section alt">
+    <div class="wrap">
+      <div class="stats">
+        <div><b>{site.experienceYears}</b><span>лет в ремонте часов</span></div>
+        <div><b>100%</b><span>только настенные часы</span></div>
+        <div><b>до работы</b><span>называю цену, начинаю с вашего согласия</span></div>
+      </div>
+      <div class="prose center">
+        <h2>Опыт и специализация</h2>
+        <p>За {site.experienceYears} лет работы через мои руки прошли механизмы разных эпох: от советских «Янтаря» и «Маяка» до европейских часов с мелодичным боем. Я работаю именно с настенными часами: механическими, кварцевыми, с боем и кукушкой, винтажными. Из европейских марок чаще всего встречаются {brands.slice(0, 6).join(', ')}.</p>
+        <h2>Мой подход</h2>
+        <ul class="checks">
+          <li>Сначала осмотр и диагностика, потом цена. Работу без вашего согласия не начинаю.</li>
+          <li>Объясняю простым языком, что сломано и какие есть варианты.</li>
+          <li>Не меняю то, что можно отремонтировать, и не навязываю лишнего.</li>
+          <li>Родные детали, циферблат и корпус стараюсь сохранять.</li>
+          <li>Если ремонт не имеет смысла, прямо об этом говорю.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <h2>Свяжитесь со мной</h2>
+        <p>Опишите проблему или пришлите фото часов — подскажу, чем могу помочь.</p>
+        <ContactButtons />
+      </div>
+      <CallCard />
+    </div>
+  </section>
+</Base>

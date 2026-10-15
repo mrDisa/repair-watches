@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CallCard from '../../components/CallCard.astro';
+import { services } from '../../data/services';
+import { breadcrumbSchema } from '../../lib/schema';
+const crumbs = [{ name: 'Услуги', href: '/uslugi/' }];
+---
+<Base
+  title="Услуги по ремонту настенных часов в Ставрополе — цены, сроки"
+  description="Все услуги по ремонту настенных часов в Ставрополе: замена батарейки, ремонт механизмов, чистка, часы с боем и кукушкой, винтажные и швейцарские часы."
+  schema={[breadcrumbSchema([{ name: 'Главная', href: '/' }, ...crumbs])]}
+>
+  <div class="wrap">
+    <Breadcrumbs items={crumbs} />
+    <div class="page-head">
+      <h1>Услуги по ремонту настенных часов в Ставрополе</h1>
+      <p class="lead">Выберите услугу, чтобы узнать, что входит в работу, сколько она стоит и как долго занимает. Не уверены, что именно нужно, — позвоните или отправьте фото часов.</p>
+    </div>
+  </div>
+  <section class="section alt">
+    <div class="wrap cards c3">
+      {services.map((s) => (
+        <article class="card link">
+          <h2 style="font-size:1.125rem"><a class="stretch" href={`/uslugi/${s.slug}/`}>{s.name}</a></h2>
+          <p>{s.short}</p>
+          <span class="price">от {s.priceFrom} ₽</span>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap" style="max-width:640px"><CallCard /></div>
+  </section>
+</Base>

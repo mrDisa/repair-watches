@@ -1,0 +1,147 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Faq from '../components/Faq.astro';
+import CallCard from '../components/CallCard.astro';
+import ContactButtons from '../components/ContactButtons.astro';
+import { site, brands, steps, advantages, homeFaq } from '../data/site';
+import { services } from '../data/services';
+import { faqSchema } from '../lib/schema';
+---
+<Base
+  title="Ремонт часов в Ставрополе — настенные часы, мастер с опытом 35 лет"
+  description="Ремонт настенных часов в Ставрополе: механические, кварцевые, с боем и кукушкой, винтажные. Выезд и приём на дому, диагностика. Звоните +7 928 321-37-80."
+  schema={[faqSchema(homeFaq)]}
+>
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <h1>Ремонт настенных часов в Ставрополе</h1>
+        <p class="lead">Мастер {site.masterName}, опыт — {site.experienceYears} лет. Чиню механические и кварцевые часы, часы с боем и кукушкой, советские и старинные. Выезжаю по городу или принимаю на дому.</p>
+        <ContactButtons ghost />
+        <div class="facts">
+          <div><b>{site.experienceYears} лет</b>в ремонте часов</div>
+          <div><b>Цена</b>до начала работы</div>
+          <div><b>Выезд</b>или приём на дому</div>
+        </div>
+      </div>
+      <Photo src="/img/hero.webp" alt="Настенные часы с маятником" ratio="4/5" priority />
+    </div>
+  </section>
+
+  <section class="section" id="uslugi">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Услуги</span>
+        <h2>Что я чиню</h2>
+        <p>Цены указаны «от»: точную сумму называю после осмотра, до начала работы.</p>
+      </div>
+      <div class="cards c3">
+        {services.map((s) => (
+          <article class="card link has-photo">
+            <Photo src={s.photo} alt={s.photoCaption} ratio="3/2" />
+            <div class="card-body">
+              <h3><a class="stretch" href={`/uslugi/${s.slug}/`}>{s.name}</a></h3>
+              <p>{s.short}</p>
+              <span class="price">от {s.priceFrom} ₽</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Марки</span>
+        <h2>Часы каких марок я чиню</h2>
+        <p>Это самые частые марки настенных часов. Если вашей нет в списке — пришлите фото, подскажу.</p>
+      </div>
+      <ul class="brands">{brands.map((b) => <li>{b}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section light">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Преимущества</span>
+        <h2>Почему обращаются ко мне</h2>
+      </div>
+      <div class="cards c3">
+        {advantages.map((a) => (
+          <div class="card"><h3>{a.t}</h3><p>{a.d}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark" id="kak-my-rabotaem">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Как это происходит</span>
+        <h2>Как мы работаем</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s) => <li><h3>{s.t}</h3><p>{s.d}</p></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="osmotr">
+    <div class="wrap split">
+      <Photo src="/img/svc-cleaning.webp" alt="Шестерни часового механизма крупным планом" caption="Механизм изнутри" ratio="4/3" />
+      <div>
+        <span class="eyebrow">Диагностика</span>
+        <h2>Что я проверяю при осмотре</h2>
+        <p>Причина остановки часов редко лежит на поверхности. Перед тем как назвать цену, я смотрю механизм целиком:</p>
+        <ul class="checks">
+          <li>состояние смазки и наличие загрязнений;</li>
+          <li>износ осей и отверстий в пластинах;</li>
+          <li>заводную пружину или гири, цепь и шнур;</li>
+          <li>анкерный ход, подвес и ход маятника;</li>
+          <li>узел боя и мелодию, если они есть;</li>
+          <li>стрелки, циферблат и крепление корпуса.</li>
+        </ul>
+        <p>После осмотра объясняю, что нашёл, и предлагаю варианты с ценой. Работу начинаю только с вашего согласия.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Доверие</span>
+        <h2>Мастер, а не «сервис с конвейера»</h2>
+        <p>Я лично принимаю часы, осматриваю механизм и делаю ремонт. Не передаю работу другим и не называю цену по телефону вслепую. Если ремонт не имеет смысла, так и скажу. Подробнее — на странице <a href="/o-mastere/">«О мастере»</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light" id="faq">
+    <div class="wrap prose">
+      <div class="section-head">
+        <span class="eyebrow">Вопросы</span>
+        <h2>Частые вопросы</h2>
+      </div>
+      <Faq items={homeFaq} />
+    </div>
+  </section>
+
+  <section class="section dark" id="kontakty">
+    <div class="wrap split">
+      <div>
+        <span class="eyebrow">Контакты</span>
+        <h2>Свяжитесь удобным способом</h2>
+        <ul class="contact-list">
+          <li><b>Телефон</b><a href={`tel:${site.phone}`} data-goal="click_phone">{site.phoneDisplay}</a></li>
+          <li><b>Где работаю</b>{site.city}. {site.area}</li>
+          <li><b>График</b>{site.hours}</li>
+        </ul>
+        <ContactButtons ghost />
+        <p style="margin-top:16px"><a href="/kontakty/">Все контакты и как отправить часы →</a></p>
+      </div>
+      <CallCard />
+    </div>
+  </section>
+</Base>

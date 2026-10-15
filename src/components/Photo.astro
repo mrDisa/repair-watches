@@ -1,0 +1,11 @@
+---
+import Icon from './Icon.astro';
+// Пока src не задан — показывается заглушка. Положите файл в public/img/ и передайте src="/img/имя.webp"
+const { src, alt = '', caption = '', ratio = '', priority = false } = Astro.props;
+---
+<figure class="photo" style={ratio ? `aspect-ratio:${ratio}` : undefined}>
+  {src
+    ? <img src={src} alt={alt} loading={priority ? "eager" : "lazy"} fetchpriority={priority ? "high" : undefined} decoding="async" width="800" height="600" />
+    : <div class="ph" role="img" aria-label={alt || 'Место для фото'}><Icon name="clock" /><span>Здесь будет фото</span></div>}
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
